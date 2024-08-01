@@ -8,7 +8,7 @@ param vmParam object
 
 var serviceName = 'selfhostedagent'
 
-module resourceGroupUKS 'Modules/resource-group.bicep' = {
+module resourceGroupUKS 'modules/resource-group.bicep' = {
   name: '${serviceName}-resourceGroup'
   params: {
     resourceGroup: resourceGroupUKSParam
@@ -16,7 +16,7 @@ module resourceGroupUKS 'Modules/resource-group.bicep' = {
   }
 }
 
-module virtualNetwork 'Modules/virtual-network.bicep' = {
+module virtualNetwork 'modules/virtual-network.bicep' = {
   name: '${serviceName}-virtualNetwork'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
@@ -26,7 +26,7 @@ module virtualNetwork 'Modules/virtual-network.bicep' = {
   }
 }
 
-module keyVault 'Modules/key-vault.bicep' = {
+module keyVault 'modules/key-vault.bicep' = {
   name: '${serviceName}-keyVault'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
@@ -36,7 +36,7 @@ module keyVault 'Modules/key-vault.bicep' = {
   }
 }
 
-module virtualMachine 'Modules/virtual-machine.bicep' = {
+module virtualMachine 'modules/virtual-machine.bicep' = {
   name: '${serviceName}-virtualMachine'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
@@ -44,7 +44,6 @@ module virtualMachine 'Modules/virtual-machine.bicep' = {
     location: resourceGroupUKSParam.location
     vm: vmParam
     subnetId: virtualNetwork.outputs.subnetId
-    sshKeyUri:keyVault.outputs.sshKeyUri
   }
   dependsOn: [
     virtualNetwork
@@ -53,5 +52,3 @@ module virtualMachine 'Modules/virtual-machine.bicep' = {
 
 output keyVaultId string = keyVault.outputs.keyVaultId
 output vnetdefaultsubnetId string = virtualNetwork.outputs.subnetId
-output sshKeyUri string = keyVault.outputs.sshKeyUri
-

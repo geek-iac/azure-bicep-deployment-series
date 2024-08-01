@@ -1,4 +1,4 @@
-using './main.bicep'
+using '../main.bicep'
 
 param vnetParam = {
   name: 'demoiacvnet'
@@ -17,7 +17,6 @@ param tagsParam = {
 
 param keyVaultParam = {
   name: 'nachokv'
-  sshKeyName: 'azdagentpool'
 }
 
 param vmParam = {
