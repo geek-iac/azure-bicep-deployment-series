@@ -1,0 +1,59 @@
+# Ignore private RSA keys
+*.pem
+*.key
+
+# Ignore SSH key files
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+
+# Ignore specific files
+private_key.pem
+private_key.key
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.swp
+
+# Ignore compiled files
+*.class
+*.o
+*.so
+
+# Ignore dependency directories
+node_modules/
+vendor/
+target/
+
+# Ignore IDE and editor config files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+.env.test.local
+.env.production.local
