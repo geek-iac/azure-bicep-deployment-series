@@ -1,57 +1,41 @@
-targetScope = 'subscription'
-
-param resourceGroupParam object
-param vmNameParam string
-param adminUsernameParam string
-param sshPublicKeyParam string
-param vmSizeParam string
-param vnetAddressPrefixParam string
-param subnetAddressPrefixParam string
-param locationParam string
-param imageReferenceParam object
-param keyVaultParam object
+param location string = resourceGroup().location
 param tagsParam object = {}
+param vnetParam object
+param keyVaultParam object
+param vmParam object
 
 var serviceName = 'selfhostedagent'
 
-module resourceGroup 'Modules/resource-group.bicep' = {
-  name: '${serviceName}-resourceGroup'
-  scope: subscription()
+module virtualNetwork 'Modules/virtual-network.bicep' = {
+  name: '${serviceName}-virtualNetwork'
   params: {
-    resourceGroup: resourceGroupParam
+    vnet: vnetParam
     tags: tagsParam
+    location: location
+  }
+}
+
+module keyVault 'Modules/key-vault.bicep' = {
+  name: '${serviceName}-keyVault'
+  params: {
+    keyVault: keyVaultParam
+    tags: tagsParam
+    location: location
   }
 }
 
 module virtualMachine 'Modules/virtual-machine.bicep' = {
   name: '${serviceName}-virtualMachine'
-  scope: resourceGroup(resourceGroupParam.name)
-  dependsOn: [
-    resourceGroup
-  ]
   params: {
-    vmName: vmNameParam
-    adminUsername: adminUsernameParam
-    sshPublicKey: sshPublicKeyParam
-    vmSize: vmSizeParam
-    vnetAddressPrefix: vnetAddressPrefixParam
-    subnetAddressPrefix: subnetAddressPrefixParam
-    location: locationParam
-    imageReference: imageReferenceParam
     tags: tagsParam
+    location: location
+    vm: vmParam
+    subnetId: virtualNetwork.outputs.subnetId
   }
+  dependsOn: [
+    virtualNetwork
+  ]
 }
 
-module keyVault 'Modules/key-vault.bicep' = {
-  scope: resourceGroup(resourceGroupParam.name)
-  dependsOn: [
-    resourceGroup
-  ]
-  name: '${serviceName}-keyVault'
-  params: {
-    keyVault: keyVaultParam
-    location: resourceGroupParam.location
-    vmPrincipalId: virtualMachine.outputs.principalId
-    tags: tagsParam
-  }
-}
+output keyVaultId string = keyVault.outputs.keyVaultId
+output vnetdefaultsubnetId string = virtualNetwork.outputs.subnetId
