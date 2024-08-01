@@ -17,6 +17,7 @@ param tagsParam = {
 
 param keyVaultParam = {
   name: 'nachokv'
+  sshKeyName: 'azdagentpool'
 }
 
 param vmParam = {
@@ -30,4 +31,9 @@ param vmParam = {
     sku: '20_04-lts-gen2'
     version: 'latest'
   }
+}
+
+param resourceGroupUKSParam = {
+  name: 'demo'
+  location: 'uksouth'
 }

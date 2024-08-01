@@ -1,7 +1,8 @@
-param location string = resourceGroup().location
+param location string
 param tags object = {}
 param vm object
 param subnetId string
+param sshKeyUri string
 
 resource networkInterfaceResource 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: '${vm.name}-nic'
@@ -48,7 +49,7 @@ resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2021-07-01' =
           publicKeys: [
             {
               path: '/home/${vm.adminUsername}/.ssh/authorized_keys'
-              keyData: vm.sshPublicKey
+              keyData: sshKeyUri
             }
           ]
         }
