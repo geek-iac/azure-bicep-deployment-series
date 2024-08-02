@@ -1,6 +1,6 @@
 # Overview
 
-The template provision an Azure Linux Virtual machine.
+The bicep template provisions an Azure Linux Virtual machine.
 
 # Project Local Testing Guide
 
