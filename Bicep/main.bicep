@@ -24,6 +24,9 @@ module virtualNetwork 'modules/virtual-network.bicep' = {
     tags: tagsParam
     location: resourceGroupUKSParam.location
   }
+  dependsOn: [
+    resourceGroupUKS
+  ]
 }
 
 module keyVault 'modules/key-vault.bicep' = {
@@ -34,6 +37,9 @@ module keyVault 'modules/key-vault.bicep' = {
     tags: tagsParam
     location: resourceGroupUKSParam.location
   }
+  dependsOn: [
+    resourceGroupUKS
+  ]
 }
 
 module virtualMachine 'modules/virtual-machine.bicep' = {
