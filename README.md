@@ -9,7 +9,7 @@ This README provides guidance on how to locally test and deploy Azure resources 
 ## Prerequisites
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
-- [SSH Key Pair fo Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys#create-an-ssh-key-pair)
+- [SSH Key Pair for Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys#create-an-ssh-key-pair)
 
 ## Generating an SSH Key Pair
 
