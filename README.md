@@ -33,15 +33,15 @@ az account set --subscription "<SubscriptionID>"
 ## Validate the Bicep Template
 
 Validate your Bicep template to ensure it is free of syntax errors.
-
+**Note** Our Template is subscription scoped
 ```bash
-az deployment group validate --name Deployment --resource-group $ResourceGroupName --template-file main.bicep --parameters parameter.bicepparam
+az deployment sub validate --name Deployment --location $location --template-file main.bicep --parameters parameter.bicepparam
 ```
 
-## Deploy the subscription scoped Bicep Template
+## Deploy the Bicep Template
 
 ```bash
-az deployment group create --name Deployment --resource-group $ResourceGroupName --template-file main.bicep --parameters parameter.bicepparam
+az deployment sub create --name Deployment --resource-group $location --template-file main.bicep --parameters parameter.bicepparam
 ```
 
 ## Troubleshooting
