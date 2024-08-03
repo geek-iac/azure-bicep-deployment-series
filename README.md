@@ -9,7 +9,7 @@ This README provides guidance on how to locally test and deploy Azure resources 
 ## Prerequisites
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
-- [SSH Key Pair fo Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys#create-an-ssh-key-pair)
+- [SSH Key Pair for Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys#create-an-ssh-key-pair)
 
 ## Generating an SSH Key Pair
 
@@ -33,15 +33,15 @@ az account set --subscription "<SubscriptionID>"
 ## Validate the Bicep Template
 
 Validate your Bicep template to ensure it is free of syntax errors.
-
+**Note** Our Template is subscription scoped
 ```bash
-az deployment group validate --name Deployment --resource-group $ResourceGroupName --template-file main.bicep --parameters parameter.bicepparam
+az deployment sub validate --name Deployment --location $location --template-file main.bicep --parameters parameter.bicepparam
 ```
 
-## Deploy the subscription scoped Bicep Template
+## Deploy the Bicep Template
 
 ```bash
-az deployment group create --name Deployment --resource-group $ResourceGroupName --template-file main.bicep --parameters parameter.bicepparam
+az deployment sub create --name Deployment --resource-group $location --template-file main.bicep --parameters parameter.bicepparam
 ```
 
 ## Troubleshooting

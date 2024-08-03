@@ -1,5 +1,5 @@
 param keyVault object
-param tags object
+param tags object = {}
 param location string
 
 resource keyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' = {
