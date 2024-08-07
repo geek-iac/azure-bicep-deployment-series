@@ -5,6 +5,7 @@ param tagsParam object = {}
 param vnetParam object
 param keyVaultParam object
 param vmParam object
+param deployNSGParam bool = false
 
 var serviceName = 'selfhostedagent'
 
@@ -23,6 +24,7 @@ module virtualNetwork 'modules/virtual-network.bicep' = {
     vnet: vnetParam
     tags: tagsParam
     location: resourceGroupUKSParam.location
+    deployNSG: deployNSGParam
   }
   dependsOn: [
     resourceGroupUKS
