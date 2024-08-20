@@ -1,0 +1,4 @@
+variables:
+### Pipeline variables
+  serviceConnectionName: automationm
+  paramterFile: xccvb

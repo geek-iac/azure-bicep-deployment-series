@@ -1,0 +1,63 @@
+parameters:
+- name: name
+  displayName: Stage Name
+  type: string
+
+- name: displayName
+  displayName: Stage Display Name
+  type: string
+
+- name: dependsOn
+  displayName: Depends On
+  type: object
+  default: ''
+
+- name: condition
+  displayName: Condition
+  type: string
+  default: ''
+
+- name: variables
+  displayName: Variables
+  type: object
+  default: ''
+
+stages:
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  ${{ if not(eq(parameters.dependsOn, '')) }}:
+    dependsOn: ${{ parameters.dependsOn }}
+  ${{ if not(eq(parameters.condition, '')) }}:
+    condition: ${{ parameters.condition }}
+  ${{ if not(eq(parameters.variables, '')) }}:
+    variables: ${{ parameters.variables }}
+  jobs:
+  - job: Validate_Publish_Bicep_Files
+    displayName: Validate & Publish Bicep Files
+    steps:
+    ### Validate Bicep template
+    - task: CmdLine@2
+      name: Validate_Bicep_Template
+      displayName: Validate Bicep Template
+      inputs:
+        script: az bicep build --file ${{ variables.bicepFolder }}/${{ variables.DeploymentFile }}
+        failOnStderr: true
+    
+    ### Validate Bicep parametrs file is valid json
+    - task: CmdLine@2
+      name: Validate_Bicep_Parameters_File
+      displayName: Validate Bicep Parameters File
+      inputs:
+        script: az bicep build-params --file ${{ variables.bicepFolder }}/${{ variables.ParametersFile }}
+        failOnStderr: true
+
+    ### Validate Bicep template
+    - task: AzureCLI@2
+      name: Validate_Bicep_Template
+      displayName: Validate Bicep Template
+      inputs:
+        azureSubscription: ${{ variables.serviceConnectionName }}
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          az deployment group validate --resource-group ${{ variables.resourceGroupName }} --template-file ${{ variables.bicepFolder }}/${{ variables.DeploymentFile }} --parameters ${{ variables.bicepFolder }}/${{ variables.ParametersFile }}

@@ -1,0 +1,19 @@
+# manual-approval-stage.yml
+
+parameters:
+  - name: stageName
+    type: string
+
+stages:
+  - stage: ${{ parameters.stageName }}
+    displayName: 'Manual Approval'
+    jobs:
+      - job: Approval
+        displayName: 'Manual Approval'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              notificationAlias: 'your-team-email@domain.com'
+              instructions: 'Please review the changes and approve.'

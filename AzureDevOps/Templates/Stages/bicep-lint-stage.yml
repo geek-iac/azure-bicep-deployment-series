@@ -1,0 +1,67 @@
+parameters:
+- name: name
+  displayName: Stage Name
+  type: string
+
+- name: displayName
+  displayName: Stage Display Name
+  type: string
+
+- name: dependsOn
+  displayName: Depends On
+  type: object
+  default: ''
+
+- name: condition
+  displayName: Condition
+  type: string
+  default: ''
+
+- name: variables
+  displayName: Variables
+  type: object
+  default: ''
+
+stages:
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  ${{ if not(eq(parameters.dependsOn, '')) }}:
+    dependsOn: ${{ parameters.dependsOn }}
+  ${{ if not(eq(parameters.condition, '')) }}:
+    condition: ${{ parameters.condition }}
+  ${{ if not(eq(parameters.variables, '')) }}:
+    variables: ${{ parameters.variables }}
+
+  jobs:
+    - job: LintInfra
+      displayName: Lint Infra
+      steps:
+        - task: AzureCLI@2
+          displayName: Lint main.bicep
+          inputs:
+            azureSubscription:  ${{ variables.serviceConnectionName }}
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              az bicep install
+              az bicep lint --file infra/main.bicep --diagnostics-format sarif > $(System.DefaultWorkingDirectory)/bicep.sarif
+              az bicep build --file ${{ parameters.bicepFile }}
+
+        - task: PublishBuildArtifacts@1
+          condition: always()
+          inputs:
+            pathToPublish: $(System.DefaultWorkingDirectory)/bicep.sarif
+            artifactName: CodeAnalysisLogs # required to show up in the scans tab
+
+        - task: ARMDeploymentInsights@2
+          name: Dryrun_Bicep_Template
+          displayName: Dryrun Bicep Template
+          inputs:
+            deploymentName: ${{ variables.DeploymentName }}
+            deploymentScope: 'Resource Group'
+            armServiceConnection: ${{ variables.serviceConnectionName }}
+            subscriptionId: ${{ variables.subscriptionId }}
+            resourceGroupName: ${{ variables.resourceGroupName }}
+            templateLocation: 'File'
+            templateFile: '${{ variables.bicepFolder }}/${{ variables.DeploymentFile }}'
+            templateParametersFile: '${{ variables.bicepFolder }}/${{ variables.ParametersFile }}'
