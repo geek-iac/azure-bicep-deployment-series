@@ -1,19 +1,47 @@
-# manual-approval-stage.yml
-
 parameters:
-  - name: stageName
-    type: string
+- name: name
+  displayName: Stage Name
+  type: string
 
+- name: displayName
+  displayName: Stage Display Name
+  type: string
+
+- name: dependsOn
+  displayName: Depends On
+  type: object
+  default: ''
+
+- name: condition
+  displayName: Condition
+  type: string
+  default: ''
+
+- name: variables
+  displayName: Variables
+  type: object
+  default: ''
+
+- name: environment
+  displayName: Environment
+  type: string
+  
 stages:
-  - stage: ${{ parameters.stageName }}
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  ${{ if not(eq(parameters.dependsOn, '')) }}:
+    dependsOn: ${{ parameters.dependsOn }}
+  ${{ if not(eq(parameters.condition, '')) }}:
+    condition: ${{ parameters.condition }}
+  ${{ if not(eq(parameters.variables, '')) }}:
+    variables: ${{ parameters.variables }}
+  jobs:
+  - job: Manual_Approval
     displayName: 'Manual Approval'
-    jobs:
-      - job: Approval
-        displayName: 'Manual Approval'
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: ManualValidation@0
-            inputs:
-              notificationAlias: 'your-team-email@domain.com'
-              instructions: 'Please review the changes and approve.'
+    steps:
+    - task: ManualValidation@0
+      name: Manual_Approval
+      displayName: 'Manual Approval'
+      inputs:
+        notificationAlias: 'nacho.chukwu@gmail.com'
+        instructions: 'Please review the changes and approve.'
