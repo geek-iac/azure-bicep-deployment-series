@@ -60,4 +60,4 @@ stages:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-          az deployment sub validate --location uksouth --template-file ${{ variables.bicepFolder }}/${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+          az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
