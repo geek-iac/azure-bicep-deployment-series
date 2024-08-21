@@ -5,7 +5,7 @@ param tagsParam object = {}
 param vnetParam object
 param keyVaultParam object
 param vmParam object
-param deployNSGParam bool = false
+param deployNSGParam bool = true
 
 var serviceName = 'selfhostedagent'
 
