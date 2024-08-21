@@ -28,34 +28,33 @@ stages:
   parameters:
     name: Validate
     displayName: Validate
-    dependsOn: []
     variables:
     - template: ../Templates/Variables/variables-dev.yml
 
-### Lint
-- template: ../Templates/Stages/bicep-lint-stage.yml
-  parameters:
-    name: Lint
-    displayName: Lint
-    dependsOn: Validate
-    variables:
-    - template: ../Templates/Variables/variables-dev.yml
+# ### Lint
+# - template: ../Templates/Stages/bicep-lint-stage.yml
+#   parameters:
+#     name: Lint
+#     displayName: Lint
+#     dependsOn: Validate
+#     variables:
+#     - template: ../Templates/Variables/variables-dev.yml
 
-### Manual Deployment approval
-- template: ../Templates/Stages/manual-approval-stage.yml
-  parameters:
-    name: ManualApproval
-    displayName: ManualApproval
-    dependsOn: Lint
-    variables:
-    - template: ../Templates/Variables/variables-dev.yml
+# ### Manual Deployment approval
+# - template: ../Templates/Stages/manual-approval-stage.yml
+#   parameters:
+#     name: ManualApproval
+#     displayName: ManualApproval
+#     dependsOn: Lint
+#     variables:
+#     - template: ../Templates/Variables/variables-dev.yml
 
-### Deploy Infrastructure BVT
-- template: ../Templates/Stages/bicep-deployment-stage.yml
-  parameters:
-    name: Deploy_Infrastructure_BVT
-    displayName: Deploy Infrastructure BVT
-    dependsOn: ManualApproval
-    variables:
-    - template: ../Templates/Variables/variables-dev.yml
-    environment: BVT
+# ### Deploy Infrastructure BVT
+# - template: ../Templates/Stages/bicep-deployment-stage.yml
+#   parameters:
+#     name: Deploy_Infrastructure_BVT
+#     displayName: Deploy Infrastructure BVT
+#     dependsOn: ManualApproval
+#     variables:
+#     - template: ../Templates/Variables/variables-dev.yml
+#     environment: BVT
