@@ -52,5 +52,5 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                az deployment group create --resource-group ${{ variables.resourceGroupName }} --template-file bicepTemplates/${{ variables.DeploymentFile }} --parameters bicepTemplates/${{ variables.ParametersFile }}
+                az deployment sub create --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
               workingDirectory: $(Pipeline.Workspace)

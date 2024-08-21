@@ -1,4 +1,7 @@
 variables:
 ### Pipeline variables
-  serviceConnectionName: automationm
-  paramterFile: xccvb
+  serviceConnectionName: eng-engineering
+  templateFile: $(Build.Repository.LocalPath)/Bicep/main.bicep
+  parametersFile: $(Build.Repository.LocalPath)/Bicep/dev.parameter.bicepparam
+  DeploymentName: selfhostedagent
+  subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73

@@ -44,8 +44,8 @@ stages:
             scriptLocation: inlineScript
             inlineScript: |
               az bicep install
-              az bicep lint --file infra/main.bicep --diagnostics-format sarif > $(System.DefaultWorkingDirectory)/bicep.sarif
-              az bicep build --file ${{ parameters.bicepFile }}
+              az bicep lint --file ${{ variables.templateFile }} --diagnostics-format sarif > $(System.DefaultWorkingDirectory)/bicep.sarif
+              az bicep build --file ${{ variables.templateFile }}
 
         - task: PublishBuildArtifacts@1
           condition: always()
@@ -58,10 +58,10 @@ stages:
           displayName: Dryrun Bicep Template
           inputs:
             deploymentName: ${{ variables.DeploymentName }}
-            deploymentScope: 'Resource Group'
+            deploymentScope: 'Subscription'
             armServiceConnection: ${{ variables.serviceConnectionName }}
             subscriptionId: ${{ variables.subscriptionId }}
-            resourceGroupName: ${{ variables.resourceGroupName }}
+            # resourceGroupName: ${{ variables.resourceGroupName }}
             templateLocation: 'File'
-            templateFile: '${{ variables.bicepFolder }}/${{ variables.DeploymentFile }}'
-            templateParametersFile: '${{ variables.bicepFolder }}/${{ variables.ParametersFile }}'
+            templateFile: '${{ variables.templateFile }}'
+            templateParametersFile: '${{ variables.parametersFile }}'

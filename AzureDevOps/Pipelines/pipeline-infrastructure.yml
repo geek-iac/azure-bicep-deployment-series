@@ -31,7 +31,6 @@ stages:
     dependsOn: []
     variables:
     - template: ../Templates/Variables/variables-dev.yml
-    - template: ../Templates/Variables/variables-global.yml
 
 ### Lint
 - template: ../Templates/Stages/bicep-lint-stage.yml
@@ -41,7 +40,6 @@ stages:
     dependsOn: Validate
     variables:
     - template: ../Templates/Variables/variables-dev.yml
-    - template: ../Templates/Variables/variables-global.yml
 
 ### Manual Deployment approval
 - template: ../Templates/Stages/manual-approval-stage.yml
@@ -51,7 +49,6 @@ stages:
     dependsOn: Lint
     variables:
     - template: ../Templates/Variables/variables-dev.yml
-    - template: ../Templates/Variables/variables-global.yml
 
 ### Deploy Infrastructure BVT
 - template: ../Templates/Stages/bicep-deployment-stage.yml
@@ -61,5 +58,4 @@ stages:
     dependsOn: ManualApproval
     variables:
     - template: ../Templates/Variables/variables-dev.yml
-    - template: ../Templates/Variables/variables-global.yml
     environment: BVT
