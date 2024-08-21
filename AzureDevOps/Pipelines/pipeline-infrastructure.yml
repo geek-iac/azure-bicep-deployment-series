@@ -20,7 +20,7 @@ variables:
 name: $(major).$(minor).$(patch)$(branch)-Infrastructure
 
 pool:
-  vmImage: ubuntu-latest
+  name: linux-agentpool
 
 stages:
 ### Validate
@@ -30,8 +30,8 @@ stages:
     displayName: Validate
     dependsOn: []
     variables:
-    - template: ../Variables/variables-dev.yml
-    - template: ../Variables/variables-global.yml
+    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Templates/Variables/variables-global.yml
 
 ### Lint
 - template: ../Templates/Stages/bicep-lint-stage.yml
@@ -40,8 +40,8 @@ stages:
     displayName: Lint
     dependsOn: Validate
     variables:
-    - template: ../Variables/variables-dev.yml
-    - template: ../Variables/variables-global.yml
+    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Templates/Variables/variables-global.yml
 
 ### Manual Deployment approval
 - template: ../Templates/Stages/manual-approval-stage.yml
@@ -50,8 +50,8 @@ stages:
     displayName: ManualApproval
     dependsOn: Lint
     variables:
-    - template: ../Variables/variables-dev.yml
-    - template: ../Variables/variables-global.yml
+    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Templates/Variables/variables-global.yml
 
 ### Deploy Infrastructure BVT
 - template: ../Templates/Stages/bicep-deployment-stage.yml
@@ -60,6 +60,6 @@ stages:
     displayName: Deploy Infrastructure BVT
     dependsOn: ManualApproval
     variables:
-    - template: ../Variables/variables-dev.yml
-    - template: ../Variables/variables-global.yml
+    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Templates/Variables/variables-global.yml
     environment: BVT
