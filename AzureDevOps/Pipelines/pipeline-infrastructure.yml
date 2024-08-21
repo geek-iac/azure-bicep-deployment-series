@@ -23,13 +23,26 @@ pool:
   name: linux-agentpool
 
 stages:
-### Validate
-- template: ../Templates/Stages/bicep-validation-stage.yml
-  parameters:
-    name: Validate
-    displayName: Validate
-    variables:
-    - template: ../Templates/Variables/variables-dev.yml
+- stage: testing
+  displayName: testing
+  jobs:
+  - job: Manual_Approval
+    displayName: 'Manual Approval'
+    steps:
+    - task: ManualValidation@0
+      name: Manual_Approval
+      displayName: 'Manual Approval'
+      inputs:
+        notificationAlias: 'nacho.chukwu@gmail.com'
+        instructions: 'Please review the changes and approve.'
+
+# ### Validate
+# - template: ../Templates/Stages/bicep-validation-stage.yml
+#   parameters:
+#     name: Validate
+#     displayName: Validate
+#     variables:
+#     - template: ../Templates/Variables/variables-dev.yml
 
 # ### Lint
 # - template: ../Templates/Stages/bicep-lint-stage.yml
