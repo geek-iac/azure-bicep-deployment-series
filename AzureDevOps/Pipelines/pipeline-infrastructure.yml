@@ -47,14 +47,14 @@ stages:
         jq . ${{ variables.bicepFolder }}/dev.parameter.bicepparam
       displayName: 'List all files and directories recursively'
 
-stages:
-### Validate & Publish
-- template: ../Templates/Stages/stage-validate-publish-bicep.yml
-  parameters:
-    name: Validate_Publish
-    displayName: Validate & Publish
-    variables:
-    - template: ../Variables/variables-dev.yml
+# stages:
+# ### Validate & Publish
+# - template: ../Templates/Stages/stage-validate-publish-bicep.yml
+#   parameters:
+#     name: Validate_Publish
+#     displayName: Validate & Publish
+#     variables:
+#     - template: ../Variables/variables-dev.yml
 
 
 # ### Validate
