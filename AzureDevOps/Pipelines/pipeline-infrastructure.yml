@@ -42,6 +42,8 @@ stages:
         echo "Listing the directory structure:"
         ls -R
         cat Bicep/main.bicep
+        cat Bicep/dev.parameter.bicepparam
+        az deployment sub create --location uksouth --template-file  Bicep/main.bicep --parameters Bicep/dev.parameter.bicepparam
         az bicep build --file Bicep/main.bicep
       displayName: 'List all files and directories recursively'
 
