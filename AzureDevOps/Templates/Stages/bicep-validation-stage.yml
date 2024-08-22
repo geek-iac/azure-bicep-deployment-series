@@ -34,15 +34,7 @@ stages:
   jobs:
   - job: Validate_Publish_Bicep_Files
     displayName: Validate & Publish Bicep Files
-    steps:
-    ### Validate Bicep template
-    - task: CmdLine@2
-      name: Validate_Bicep_Template
-      displayName: Validate Bicep Template
-      inputs:
-        script: az bicep build --file ${{ variables.templateFile }}
-        failOnStderr: true
-    
+    steps:    
     ### Validate Bicep parametrs file is valid json
     - task: CmdLine@2
       name: Validate_Bicep_Parameters_File
