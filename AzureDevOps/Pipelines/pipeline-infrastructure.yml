@@ -35,26 +35,13 @@ stages:
         ls -R
       displayName: 'List all files and directories recursively'
 
-### Validate Stage
-- stage: Validate
-  displayName: Validate Bicep Templates
-  jobs:
-  - template: ../Templates/Stages/bicep-validation-stage.yml
-    parameters:
-      name: Validate
-      displayName: Validate
-      dependsOn: []
-      variables:
-      - template: ../Templates/Variables/variables-dev.yml
-
-
-# ### Validate
-# - template: ../Templates/Stages/bicep-validation-stage.yml
-#   parameters:
-#     name: Validate
-#     displayName: Validate
-#     variables:
-#     - template: ../Templates/Variables/variables-dev.yml
+### Validate
+- template: ../Templates/Stages/bicep-validation-stage.yml
+  parameters:
+    name: Validate
+    displayName: Validate
+    variables:
+    - template: ../Templates/Variables/variables-dev.yml
 
 # ### Lint
 # - template: ../Templates/Stages/bicep-lint-stage.yml
