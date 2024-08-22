@@ -40,9 +40,10 @@ stages:
       name: Validate_Bicep_Parameters_File
       displayName: Validate Bicep Parameters File
       inputs:
-        script: az bicep build-params --file ${{ variables.parametersFile }}
+        script: |
+          jq .${{ variables.templateFile }}
         failOnStderr: true
-
+        
     ### Validate Bicep template
     - task: AzureCLI@2
       name: Validate_Bicep_Template
