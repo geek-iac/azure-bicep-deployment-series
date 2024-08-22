@@ -23,6 +23,7 @@ pool:
   name: linux-agentpool
 
 stages:
+### Testing Stage
 - stage: testing
   displayName: Testing
   jobs:
@@ -33,6 +34,18 @@ stages:
         echo "Listing the directory structure:"
         ls -R
       displayName: 'List all files and directories recursively'
+
+### Validate Stage
+- stage: Validate
+  displayName: Validate Bicep Templates
+  jobs:
+  - template: ../Templates/Stages/bicep-validation-stage.yml
+    parameters:
+      name: Validate
+      displayName: Validate
+      dependsOn: []
+      variables:
+      - template: ../Templates/Variables/variables-dev.yml
 
 
 # ### Validate
