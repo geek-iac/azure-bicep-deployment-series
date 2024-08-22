@@ -41,7 +41,7 @@ stages:
       displayName: Validate Bicep Parameters File
       inputs:
         script: |
-          jq .${{ variables.templateFile }}
+          jq . ${{ variables.templateFile }}
         failOnStderr: true
         
     ### Validate Bicep template
