@@ -41,12 +41,8 @@ stages:
     - script: |
         echo "Listing the directory structure:"
         ls -R
-        az bicep build --file Bicep/main.bicep
         cat Bicep/main.bicep
-        jq . Bicep/dev.parameter.bicepparam
-        cat Bicep/dev.parameter.bicepparam
-        az bicep build --file $(bicepFolder)/main.bicep
-        jq . $(bicepFolder)/dev.parameter.bicepparam
+        az bicep build --file Bicep/main.bicep
       displayName: 'List all files and directories recursively'
 
 # stages:
