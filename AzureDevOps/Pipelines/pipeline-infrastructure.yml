@@ -52,7 +52,7 @@ stages:
     ### Pipeline variables
       serviceConnectionName: eng-engineering
       templateFile: Bicep/main.bicep
-      parametersFile: Bicep/dev.parameter.bicepparam
+      parametersFile: Bicep/env/dev.parameter.bicepparam
       DeploymentName: selfhostedagent
       subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
     # variables:
