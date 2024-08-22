@@ -32,16 +32,16 @@ pool:
 
 stages:
 ### Testing Stage
-- stage: testing
-  displayName: Testing
-  jobs:
-  - job: List_Directory
-    displayName: 'List Directory'
-    steps:
-    - script: |
-        echo "Listing the directory structure:"
-        ls -R
-      displayName: 'List all files and directories recursively'
+# - stage: testing
+#   displayName: Testing
+#   jobs:
+#   - job: List_Directory
+#     displayName: 'List Directory'
+#     steps:
+#     - script: |
+#         echo "Listing the directory structure:"
+#         ls -R
+#       displayName: 'List all files and directories recursively'
 
 ### Validate
 - template: ../Templates/Stages/bicep-validation-stage.yml
