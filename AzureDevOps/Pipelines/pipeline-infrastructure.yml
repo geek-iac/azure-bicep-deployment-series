@@ -8,16 +8,24 @@ trigger:
     include:
     - AzureDevOps/Bicep/*
 
-variables:
-  major: 1
-  minor: 0
-  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 1)]
-  ${{ if eq( variables['Build.SourceBranchName'], 'main' ) }}: 
-    branch: ''
-  ${{ if ne( variables['Build.SourceBranchName'], 'main' ) }}: 
-    branch: -${{ variables['Build.SourceBranchName'] }}
+# variables:
+#   major: 1
+#   minor: 0
+#   patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 1)]
+#   ${{ if eq( variables['Build.SourceBranchName'], 'main' ) }}: 
+#     branch: ''
+#   ${{ if ne( variables['Build.SourceBranchName'], 'main' ) }}: 
+#     branch: -${{ variables['Build.SourceBranchName'] }}
 
-name: $(major).$(minor).$(patch)$(branch)-Infrastructure
+variables:
+### Pipeline variables
+  serviceConnectionName: eng-engineering
+  templateFile: $(Build.Repository.LocalPath)/Bicep/main.bicep
+  parametersFile: $(Build.Repository.LocalPath)/Bicep/dev.parameter.bicepparam
+  DeploymentName: selfhostedagent
+  subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
+
+# name: $(major).$(minor).$(patch)$(branch)-Infrastructure
 
 pool:
   name: linux-agentpool
@@ -40,8 +48,8 @@ stages:
   parameters:
     name: Validate
     displayName: Validate
-    variables:
-    - template: ../Templates/Variables/variables-dev.yml
+    # variables:
+    # - template: ../Templates/Variables/variables-dev.yml
 
 # ### Lint
 # - template: ../Templates/Stages/bicep-lint-stage.yml
