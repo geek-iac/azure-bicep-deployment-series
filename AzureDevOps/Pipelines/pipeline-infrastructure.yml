@@ -17,13 +17,13 @@ trigger:
 #   ${{ if ne( variables['Build.SourceBranchName'], 'main' ) }}: 
 #     branch: -${{ variables['Build.SourceBranchName'] }}
 
-variables:
-### Pipeline variables
-  serviceConnectionName: eng-engineering
-  templateFile: $(Build.Repository.LocalPath)/Bicep/main.bicep
-  parametersFile: $(Build.Repository.LocalPath)/Bicep/dev.parameter.bicepparam
-  DeploymentName: selfhostedagent
-  subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
+# variables:
+# ### Pipeline variables
+#   serviceConnectionName: eng-engineering
+#   templateFile: $(Build.Repository.LocalPath)/Bicep/main.bicep
+#   parametersFile: $(Build.Repository.LocalPath)/Bicep/dev.parameter.bicepparam
+#   DeploymentName: selfhostedagent
+#   subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
 
 # name: $(major).$(minor).$(patch)$(branch)-Infrastructure
 
