@@ -33,8 +33,8 @@ stages:
     variables: ${{ parameters.variables }}
 
   jobs:
-    - job: LintInfra
-      displayName: Lint Infra
+    - job: PreviewDeployments
+      displayName: Preview Deployments
       steps:
         - task: ARMDeploymentInsights@2
           name: Preview_Bicep_Template

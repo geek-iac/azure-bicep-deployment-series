@@ -28,24 +28,17 @@ stages:
   parameters:
     name: Validate
     displayName: Validate
-    # variables:
-    # ### Pipeline variables
-    #   serviceConnectionName: eng-engineering
-    #   templateFile: Bicep/main.bicep
-    #   parametersFile: Bicep/env/dev.parameter.bicepparam
-    #   DeploymentName: selfhostedagent
-    #   subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
     variables:
     - template: ../Variables/variables-dev.yml
 
-# ### Lint
-# - template: ../Templates/Stages/bicep-lint-stage.yml
-#   parameters:
-#     name: Lint
-#     displayName: Lint
-#     dependsOn: Validate
-#     variables:
-#     - template: ../Templates/Variables/variables-dev.yml
+### Preview Deployment
+- template: ../Templates/Stages/bicep-preview-stage.yml
+  parameters:
+    name: Preview
+    displayName: Preview
+    dependsOn: Validate
+    variables:
+    - template: ../Variables/variables-dev.yml
 
 # ### Manual Deployment approval
 # - template: ../Templates/Stages/manual-approval-stage.yml
