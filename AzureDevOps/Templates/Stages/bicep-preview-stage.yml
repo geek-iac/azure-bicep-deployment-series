@@ -36,25 +36,8 @@ stages:
     - job: LintInfra
       displayName: Lint Infra
       steps:
-        - task: AzureCLI@2
-          displayName: Lint main.bicep
-          inputs:
-            azureSubscription:  ${{ variables.serviceConnectionName }}
-            scriptType: bash
-            scriptLocation: inlineScript
-            inlineScript: |
-              az bicep install
-              az bicep lint --file ${{ variables.templateFile }} --diagnostics-format sarif > $(System.DefaultWorkingDirectory)/bicep.sarif
-              az bicep build --file ${{ variables.templateFile }}
-
-        - task: PublishBuildArtifacts@1
-          condition: always()
-          inputs:
-            pathToPublish: $(System.DefaultWorkingDirectory)/bicep.sarif
-            artifactName: CodeAnalysisLogs # required to show up in the scans tab
-
         - task: ARMDeploymentInsights@2
-          name: Dryrun_Bicep_Template
+          name: Preview_Bicep_Template
           displayName: Dryrun Bicep Template
           inputs:
             deploymentName: ${{ variables.DeploymentName }}

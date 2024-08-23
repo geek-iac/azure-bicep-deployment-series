@@ -32,16 +32,16 @@ stages:
   ${{ if not(eq(parameters.variables, '')) }}:
     variables: ${{ parameters.variables }}
   jobs:
-  - job: Validate_Publish_Bicep_Files
-    displayName: Validate & Publish Bicep Files
+  - job: Validate_Lint_Bicep_Files
+    displayName: Validate & Lint Bicep Files
     steps: 
-    ## Validate Bicep parametrs file is valid json
-    # - task: CmdLine@2
-    #   name: Validate_Bicep_Parameters_File
-    #   displayName: Validate Bicep Parameters File
-    #   inputs:
-    #     script: az bicep build-params --file ${{ variables.parametersFile }}
-    #     failOnStderr: true
+    # Validate Bicep parametrs file is valid bicepparam
+    - task: CmdLine@2
+      name: Validate_Bicep_Parameters_File
+      displayName: Validate Bicep Parameters File
+      inputs:
+        script: az bicep build-params --file ${{ variables.parametersFile }}
+        failOnStderr: true
 
     ### Validate Bicep template
     - task: AzureCLI@2
