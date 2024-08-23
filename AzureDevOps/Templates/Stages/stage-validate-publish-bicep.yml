@@ -34,22 +34,25 @@ stages:
   jobs:
   - job: Validate_Publish_Bicep_Files
     displayName: Validate & Publish Bicep Files
-    steps: 
-    ## Validate Bicep parametrs file is valid json
-    # - task: CmdLine@2
-    #   name: Validate_Bicep_Parameters_File
-    #   displayName: Validate Bicep Parameters File
-    #   inputs:
-    #     script: az bicep build-params --file ${{ variables.parametersFile }}
-    #     failOnStderr: true
-
-    ### Validate Bicep template
-    - task: AzureCLI@2
+    steps:
+    - task: CmdLine@2
       name: Validate_Bicep_Template
       displayName: Validate Bicep Template
       inputs:
-        azureSubscription: ${{ variables.serviceConnectionName }}
-        scriptType: bash
-        scriptLocation: inlineScript
-        inlineScript: |
-          az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+        script: az bicep build --file ${{ variables.bicepFolder }}/main.bicep
+        failOnStderr: true
+
+    - task: CmdLine@2
+      name: Validate_Bicep_Parameters_File
+      displayName: Validate Bicep Parameters File
+      inputs:
+        script: jq . ${{ variables.bicepFolder }}/dev.parameter.bicepparam
+        failOnStderr: true
+    
+    - task: PublishBuildArtifacts@1
+      name: Publish_Bicep_Files
+      displayName: Publish Bicep Files
+      inputs:
+        PathtoPublish: ${{ variables.bicepFolder }}
+        ArtifactName: bicepTemplates
+        publishLocation: Container
