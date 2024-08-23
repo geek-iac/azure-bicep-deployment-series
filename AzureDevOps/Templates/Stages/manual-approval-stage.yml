@@ -36,12 +36,25 @@ stages:
   ${{ if not(eq(parameters.variables, '')) }}:
     variables: ${{ parameters.variables }}
   jobs:
-  - job: Manual_Approval
-    displayName: 'Manual Approval'
-    steps:
-    - task: ManualValidation@0
-      name: Manual_Approval
-      displayName: 'Manual Approval'
-      inputs:
-        notificationAlias: 'nacho.chukwu@gmail.com'
-        instructions: 'Please review the changes and approve.'
+  # - job: Manual_Approval
+  #   displayName: 'Manual Approval'
+  #   steps:
+  #   - task: ManualValidation@0
+  #     name: Manual_Approval
+  #     displayName: 'Manual Approval'
+  #     inputs:
+  #       notificationAlias: 'nacho.chukwu@gmail.com'
+  #       instructions: 'Please review the changes and approve.'
+  - deployment: Manual_Approval
+    displayName: Manual Approval
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: ManualValidation@0
+            name: Manual_Approval
+            displayName: 'Manual Approval'
+            inputs:
+              notificationAlias: 'nacho.chukwu@gmail.com'
+              instructions: 'Please review the changes and approve.'
