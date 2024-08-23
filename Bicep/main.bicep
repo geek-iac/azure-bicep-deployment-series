@@ -9,7 +9,7 @@ param deployNSGParam bool = true
 
 var serviceName = 'selfhostedagent'
 
-module resourceGroupUKS 'modules/resource-group.bicep' = {
+module resourceGroupUKS 'Modules/resource-group.bicep' = {
   name: '${serviceName}-resourceGroup'
   params: {
     resourceGroup: resourceGroupUKSParam
@@ -17,7 +17,7 @@ module resourceGroupUKS 'modules/resource-group.bicep' = {
   }
 }
 
-module virtualNetwork 'modules/virtual-network.bicep' = {
+module virtualNetwork 'Modules/virtual-network.bicep' = {
   name: '${serviceName}-virtualNetwork'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
@@ -31,7 +31,7 @@ module virtualNetwork 'modules/virtual-network.bicep' = {
   ]
 }
 
-module keyVault 'modules/key-vault.bicep' = {
+module keyVault 'Modules/key-vault.bicep' = {
   name: '${serviceName}-keyVault'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
@@ -44,7 +44,7 @@ module keyVault 'modules/key-vault.bicep' = {
   ]
 }
 
-module virtualMachine 'modules/virtual-machine.bicep' = {
+module virtualMachine 'Modules/virtual-machine.bicep' = {
   name: '${serviceName}-virtualMachine'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
