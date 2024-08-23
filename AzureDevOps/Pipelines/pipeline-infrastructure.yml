@@ -36,7 +36,7 @@ stages:
     #   DeploymentName: selfhostedagent
     #   subscriptionId: 800eeb5c-ab87-468f-800b-d9ca632b4f73
     variables:
-    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Variables/variables-dev.yml
 
 # ### Lint
 # - template: ../Templates/Stages/bicep-lint-stage.yml
