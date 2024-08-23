@@ -46,6 +46,7 @@ stages:
     name: ManualApproval
     displayName: ManualApproval
     dependsOn: Lint
+    environment: DEV
     variables:
     - template: ../Templates/Variables/variables-dev.yml
 
