@@ -38,13 +38,13 @@ stages:
       steps:
         - task: ARMDeploymentInsights@2
           name: Preview_Bicep_Template
-          displayName: Dryrun Bicep Template
+          displayName: Preview Bicep Deployments
           inputs:
             deploymentName: ${{ variables.DeploymentName }}
             deploymentScope: 'Subscription'
             armServiceConnection: ${{ variables.serviceConnectionName }}
             subscriptionId: ${{ variables.subscriptionId }}
-            # resourceGroupName: ${{ variables.resourceGroupName }}
+            location: 'UK South'
             templateLocation: 'File'
             templateFile: '${{ variables.templateFile }}'
             templateParametersFile: '${{ variables.parametersFile }}'
