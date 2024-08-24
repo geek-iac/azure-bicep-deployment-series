@@ -47,5 +47,5 @@ stages:
     displayName: Infrastructure Deployment
     dependsOn: Preview_Deployment
     variables:
-    - template: ../Templates/Variables/variables-dev.yml
+    - template: ../Variables/variables-dev.yml
     environment: DEV
