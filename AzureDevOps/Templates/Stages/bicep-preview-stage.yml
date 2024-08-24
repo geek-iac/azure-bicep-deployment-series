@@ -33,12 +33,25 @@ stages:
     variables: ${{ parameters.variables }}
 
   jobs:
-    - job: PreviewDeployments
-      displayName: Preview Deployments
+    - job: ValidatePreviewDeployment
+      displayName: Validate & Preview Deployment
       steps:
+        #Validate Bicep Deployment
+        - task: AzureCLI@2
+          name: Bicep_Deployment_Validation
+          displayName: Bicep_Deployment_Validation
+          inputs:
+            azureSubscription: ${{ variables.serviceConnectionName }}
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+            workingDirectory: $(Pipeline.Workspace)
+
+        #Preview Bicep Deployment
         - task: ARMDeploymentInsights@2
           name: Preview_Bicep_Template
-          displayName: Preview Bicep Deployments
+          displayName: Preview Bicep Deployment
           inputs:
             deploymentName: ${{ variables.DeploymentName }}
             deploymentScope: 'Subscription'

@@ -34,18 +34,18 @@ stages:
 ### Preview Deployment
 - template: ../Templates/Stages/bicep-preview-stage.yml
   parameters:
-    name: Preview
-    displayName: Preview
+    name: Preview_Deployment
+    displayName: Preview Deployment
     dependsOn: Validate
     variables:
     - template: ../Variables/variables-dev.yml
 
-# ### Deploy Infrastructure BVT
-# - template: ../Templates/Stages/bicep-deployment-stage.yml
-#   parameters:
-#     name: Deploy_Infrastructure_BVT
-#     displayName: Deploy Infrastructure BVT
-#     dependsOn: ManualApproval
-#     variables:
-#     - template: ../Templates/Variables/variables-dev.yml
-#     environment: BVT
+### Deploy Infrastructure
+- template: ../Templates/Stages/bicep-deployment-stage.yml
+  parameters:
+    name: Infrastructure_Deployment
+    displayName: Infrastructure Deployment
+    dependsOn: Preview_Deployment
+    variables:
+    - template: ../Templates/Variables/variables-dev.yml
+    environment: DEV
