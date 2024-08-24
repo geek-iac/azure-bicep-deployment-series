@@ -40,14 +40,14 @@ stages:
       name: Validate_Bicep_Parameters_File
       displayName: Validate Bicep Parameters File
       inputs:
-        script: az bicep build-params --file ${{ variables.parametersFile }}
+        script: az bicep build-params --file ${{ variables.parametersFile }} --stdout
         failOnStderr: true
 
     - task: CmdLine@2
       name: Validate_Bicep
       displayName: Validate Bicep
       inputs:
-        script: az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+        script: az bicep build --file ${{ variables.templateFile }} --stdout
         failOnStderr: true
 
     # ### Validate Bicep template
