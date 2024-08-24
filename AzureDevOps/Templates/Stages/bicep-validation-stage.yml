@@ -43,13 +43,20 @@ stages:
         script: az bicep build-params --file ${{ variables.parametersFile }}
         failOnStderr: true
 
-    ### Validate Bicep template
-    - task: AzureCLI@2
-      name: Validate_Bicep_Template
-      displayName: Validate Bicep Template
+    - task: CmdLine@2
+      name: 2Validate_Bicep_Parameters_File
+      displayName: 2Validate Bicep Parameters File
       inputs:
-        azureSubscription: ${{ variables.serviceConnectionName }}
-        scriptType: bash
-        scriptLocation: inlineScript
-        inlineScript: |
-          az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+        script: az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
+        failOnStderr: true
+
+    # ### Validate Bicep template
+    # - task: AzureCLI@2
+    #   name: Validate_Bicep_Template
+    #   displayName: Validate Bicep Template
+    #   inputs:
+    #     azureSubscription: ${{ variables.serviceConnectionName }}
+    #     scriptType: bash
+    #     scriptLocation: inlineScript
+    #     inlineScript: |
+    #       az deployment sub validate --location uksouth --template-file ${{ variables.templateFile }} --parameters ${{ variables.parametersFile }}
