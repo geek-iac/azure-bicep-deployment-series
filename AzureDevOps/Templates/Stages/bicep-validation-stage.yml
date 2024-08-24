@@ -52,13 +52,22 @@ stages:
           az bicep build --file ${{ variables.templateFile }} --stdout
         failOnStderr: true
 
+    # Lint Bicep file
     - task: CmdLine@2
       name: Lint_Bicep
       displayName: Lint Bicep
       inputs:
         script: |
-          az bicep lint --file ${{ variables.templateFile }} --diagnostics-format sarif 
+          az bicep lint --file ${{ variables.templateFile }} --diagnostics-format sarif  > $(System.DefaultWorkingDirectory)/bicep.sarif
         failOnStderr: true
+
+    # Publish Linting Report
+    - task: PublishBuildArtifacts@1
+      condition: always()
+      inputs:
+        pathToPublish: $(System.DefaultWorkingDirectory)/bicep.sarif
+        artifactName: CodeAnalysisLogs # required to show up in the scans tab
+
     # ### Validate Bicep template
     # - task: AzureCLI@2
     #   name: Validate_Bicep_Template
