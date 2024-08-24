@@ -35,21 +35,30 @@ stages:
   - job: Validate_Lint_Bicep_Files
     displayName: Validate & Lint Bicep Files
     steps: 
-    # Validate Bicep parametrs file is valid bicepparam
+    # Validate Bicep parameter file is valid bicepparam
     - task: CmdLine@2
       name: Validate_Bicep_Parameters_File
       displayName: Validate Bicep Parameters File
       inputs:
         script: az bicep build-params --file ${{ variables.parametersFile }} --stdout
+
+    # Validate and Format Bicep file 
+    - task: CmdLine@2
+      name: Format_Validate_Bicep
+      displayName: Format Validate Bicep
+      inputs:
+        script: |
+          az bicep format --file ${{ variables.templateFile }}
+          az bicep build --file ${{ variables.templateFile }} --stdout
         failOnStderr: true
 
     - task: CmdLine@2
-      name: Validate_Bicep
-      displayName: Validate Bicep
+      name: Lint_Bicep
+      displayName: Lint Bicep
       inputs:
-        script: az bicep build --file ${{ variables.templateFile }} --stdout
+        script: |
+          az bicep lint --file ${{ variables.templateFile }} --diagnostics-format sarif 
         failOnStderr: true
-
     # ### Validate Bicep template
     # - task: AzureCLI@2
     #   name: Validate_Bicep_Template
