@@ -1,5 +1,7 @@
 using '../main.bicep'
 
+param deploySSHParam = true
+
 param resourceGroupUKSParam = {
   name: 'demo'
   location: 'uksouth'
