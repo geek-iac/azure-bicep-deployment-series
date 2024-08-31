@@ -1,12 +1,26 @@
+param vm object
 param location string
 param tags object = {}
-param vm object
 param subnetId string
+param networkSecurityGroupId string
 
-resource networkInterfaceResource 'Microsoft.Network/networkInterfaces@2021-05-01' = {
-  name: '${vm.name}-nic'
+resource publicIPAddressResource 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
+  name: '${vm.name}-pip'
   location: location
+  sku: {
+    name: 'Basic'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Dynamic'
+    publicIPAddressVersion: 'IPv4'
+    idleTimeoutInMinutes: 4
+  }
+}
+
+resource networkInterfaceResource 'Microsoft.Network/networkInterfaces@2023-09-01' = {
+  name: '${vm.name}-nic'
   tags: tags
+  location: location
   properties: {
     ipConfigurations: [
       {
@@ -16,16 +30,21 @@ resource networkInterfaceResource 'Microsoft.Network/networkInterfaces@2021-05-0
             id: subnetId
           }
           privateIPAllocationMethod: 'Dynamic'
+          publicIPAddress: {
+            id: publicIPAddressResource.id
+          }
         }
       }
     ]
+    networkSecurityGroup: {
+      id: networkSecurityGroupId
+    }
   }
 }
 
-resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2021-07-01' = {
+resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2023-09-01' = {
   name: vm.name
   location: location
-  tags: tags
   properties: {
     hardwareProfile: {
       vmSize: vm.size
@@ -34,10 +53,17 @@ resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2021-07-01' =
       osDisk: {
         createOption: 'FromImage'
         managedDisk: {
-          storageAccountType: 'Standard_LRS'
+          storageAccountType: vm.osDiskType
         }
       }
       imageReference: vm.imageReference
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: networkInterfaceResource.id
+        }
+      ]
     }
     osProfile: {
       computerName: vm.name
@@ -54,14 +80,5 @@ resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2021-07-01' =
         }
       }
     }
-    networkProfile: {
-      networkInterfaces: [
-        {
-          id: networkInterfaceResource.id
-        }
-      ]
-    }
   }
 }
-
-output vmId string = virtualMachineResource.id

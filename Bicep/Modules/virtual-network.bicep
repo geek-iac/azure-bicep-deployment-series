@@ -1,12 +1,12 @@
 param location string
 param tags object = {}
 param vnet object
-param deployNSG bool = false
+param deploySSH bool = false
 
-resource virtualNetworkResource 'Microsoft.Network/virtualNetworks@2021-05-01' = {
+resource virtualNetworkResource 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnet.name
-  tags: tags
   location: location
+  tags: tags
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -24,27 +24,25 @@ resource virtualNetworkResource 'Microsoft.Network/virtualNetworks@2021-05-01' =
   }
 }
 
-resource networkSecurityGroupResource 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (deployNSG) { 
+resource networkSecurityGroupResource 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: '${vnet.name}-nsg-01'
   location: location
+}
+
+resource sshSecurityRuleResource 'Microsoft.Network/networkSecurityGroups/securityRules@2023-11-01' = if (deploySSH) {
+  parent: networkSecurityGroupResource
+  name: 'SSH'
   properties: {
-    securityRules: [
-      {
-        name: 'SSH'
-        properties: {
-          priority: 1000
-          protocol: 'Tcp'
-          access: 'Allow'
-          direction: 'Inbound'
-          sourceAddressPrefix: '*'
-          sourcePortRange: '*'
-          destinationAddressPrefix: '*'
-          destinationPortRange: '22'
-        }
-      }
-    ]
+    priority: 1000
+    protocol: 'Tcp'
+    access: 'Allow'
+    direction: 'Inbound'
+    sourceAddressPrefix: '*'
+    sourcePortRange: '*'
+    destinationAddressPrefix: '*'
+    destinationPortRange: '22'
   }
 }
 
-output networkSecurityGroupId string = networkSecurityGroupResource.id
 output subnetId string = virtualNetworkResource.properties.subnets[0].id
+output networkSecurityGroupId string = networkSecurityGroupResource.id
