@@ -4,7 +4,7 @@ param resourceGroupUKSParam object
 param tagsParam object
 param vnetParam object
 param vmParam object
-param deploySSHParam bool = true
+param deploySSHParam bool = false
 
 param deploymentNameParam string  = 'agentPool'
 
