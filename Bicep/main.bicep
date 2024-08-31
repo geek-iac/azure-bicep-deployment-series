@@ -1,16 +1,15 @@
 targetScope='subscription'
 
 param resourceGroupUKSParam object
-param tagsParam object = {}
+param tagsParam object
 param vnetParam object
-param keyVaultParam object
 param vmParam object
-param deployNSGParam bool = false
+param deploySSHParam bool = false
 
-var serviceName = 'selfhostedagent'
+param deploymentNameParam string  = 'agentPool'
 
 module resourceGroupUKS 'modules/resource-group.bicep' = {
-  name: '${serviceName}-resourceGroup'
+  name: '${deploymentNameParam}-resourceGroup'
   params: {
     resourceGroup: resourceGroupUKSParam
     tags: tagsParam
@@ -18,26 +17,13 @@ module resourceGroupUKS 'modules/resource-group.bicep' = {
 }
 
 module virtualNetwork 'modules/virtual-network.bicep' = {
-  name: '${serviceName}-virtualNetwork'
+  name: '${deploymentNameParam}-virtual-network'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
     vnet: vnetParam
-    tags: tagsParam
     location: resourceGroupUKSParam.location
-    deployNSG: deployNSGParam
-  }
-  dependsOn: [
-    resourceGroupUKS
-  ]
-}
-
-module keyVault 'modules/key-vault.bicep' = {
-  name: '${serviceName}-keyVault'
-  scope: resourceGroup(resourceGroupUKSParam.name)
-  params: {
-    keyVault: keyVaultParam
     tags: tagsParam
-    location: resourceGroupUKSParam.location
+    deploySSH: deploySSHParam
   }
   dependsOn: [
     resourceGroupUKS
@@ -45,18 +31,19 @@ module keyVault 'modules/key-vault.bicep' = {
 }
 
 module virtualMachine 'modules/virtual-machine.bicep' = {
-  name: '${serviceName}-virtualMachine'
+  name: '${deploymentNameParam}-virtual-machine'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
-    tags: tagsParam
-    location: resourceGroupUKSParam.location
     vm: vmParam
+    location: resourceGroupUKSParam.location
+    tags: tagsParam
     subnetId: virtualNetwork.outputs.subnetId
+    networkSecurityGroupId: virtualNetwork.outputs.networkSecurityGroupId
   }
   dependsOn: [
     virtualNetwork
   ]
 }
 
-output keyVaultId string = keyVault.outputs.keyVaultId
-output vnetdefaultsubnetId string = virtualNetwork.outputs.subnetId
+output subnetId string = virtualNetwork.outputs.subnetId
+output networkSecurityGroupId string = virtualNetwork.outputs.networkSecurityGroupId
