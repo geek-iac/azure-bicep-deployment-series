@@ -22,7 +22,6 @@ param vnetParam = {
 param vmParam = {
   name: 'adoagentpoolo-vm'
   size: 'Standard_D2s_v3'
-  osDiskType: 'Standard_LRS'
   imageReference: {
     publisher: 'Canonical'
     offer: '0001-com-ubuntu-server-focal'
