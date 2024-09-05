@@ -21,14 +21,14 @@ fi
 # Create a working directory to Download and extract the agent package to
 mkdir -p $HOME/agentpool
 
-# Download the agent package
-curl https://vstsagentpackage.azureedge.net/agent/$AZP_AGENT_VERSION/vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz > $HOME/agentpool/vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz
-
-# Extract the agent package to the working directory
-tar zxvf $HOME/agentpool/vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz
-
 # Move to the working directory
 cd $HOME/agentpool
+
+# Download the agent package to the working directory
+curl https://vstsagentpackage.azureedge.net/agent/$AZP_AGENT_VERSION/vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz > vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz
+
+# Extract the agent package 
+tar zxvf vsts-agent-linux-x64-$AZP_AGENT_VERSION.tar.gz
 
 # Create the working directory for the agent service to run jobs under
 if [ -n "$AZP_WORK" ]; then

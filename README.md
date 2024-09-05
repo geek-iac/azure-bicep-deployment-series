@@ -43,7 +43,3 @@ az deployment sub validate --name Deployment --location $location --template-fil
 ```bash
 az deployment sub create --name Deployment --resource-group $location --template-file main.bicep --parameters parameter.bicepparam
 ```
-
-## Troubleshooting
-
-Review error messages closely. Common issues include missing parameters or incorrect resource configurations.
