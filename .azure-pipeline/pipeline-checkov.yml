@@ -16,28 +16,28 @@ stages:
     displayName: checkov scan
     steps:
     # Install Python and pip
-    - task: Bash@3
-      name: Install_Python_and_Pip
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "[INFO], Installing Python and pip ..."
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          python3 --version
-          pip3 --version
-      displayName: "Install Python and pip"
+    # - task: Bash@3
+    #   name: Install_Python_and_Pip
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "[INFO], Installing Python and pip ..."
+    #       sudo apt-get update
+    #       sudo apt-get install -y python3 python3-pip
+    #       python3 --version
+    #       pip3 --version
+    #   displayName: "Install Python and pip"
       
-    # Install Checkov
-    - task: Bash@3
-      name: Install_Latest_Checkov
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "[INFO], Installing latest Checkov, boto3, and botocore..."
-          pip3 install --upgrade checkov boto3 botocore
-          checkov --version
-      displayName: "Install Latest Checkov"
+    # # Install Checkov
+    # - task: Bash@3
+    #   name: Install_Latest_Checkov
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "[INFO], Installing latest Checkov, boto3, and botocore..."
+    #       pip3 install --upgrade checkov boto3 botocore
+    #       checkov --version
+    #   displayName: "Install Latest Checkov"
 
     # Checkov Ignore Checks
     - task: Bash@3
