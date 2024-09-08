@@ -1,62 +1,49 @@
-targetScope = 'subscription'
+targetScope='subscription'
 
 param resourceGroupUKSParam object
-param tagsParam object = {}
+param tagsParam object
 param vnetParam object
-param keyVaultParam object
 param vmParam object
-param deployNSGParam bool = true
+param deploySSHParam bool = false
 
-var serviceName = 'selfhostedagent'
+param deploymentNameParam string  = 'agentpool'
 
-module resourceGroupUKS 'Modules/resource-group.bicep' = {
-  name: '${serviceName}-resourceGroup'
+module resourceGroupUKS 'modules/resource-group.bicep' = {
+  name: '${deploymentNameParam}-resourceGroup'
   params: {
     resourceGroup: resourceGroupUKSParam
     tags: tagsParam
   }
 }
 
-module virtualNetwork 'Modules/virtual-network.bicep' = {
-  name: '${serviceName}-virtualNetwork'
+module virtualNetwork 'modules/virtual-network.bicep' = {
+  name: '${deploymentNameParam}-virtual-network'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
     vnet: vnetParam
-    tags: tagsParam
     location: resourceGroupUKSParam.location
-    deployNSG: deployNSGParam
+    tags: tagsParam
+    deploySSH: deploySSHParam
   }
   dependsOn: [
     resourceGroupUKS
   ]
 }
 
-module keyVault 'Modules/key-vault.bicep' = {
-  name: '${serviceName}-keyVault'
+module virtualMachine 'modules/virtual-machine.bicep' = {
+  name: '${deploymentNameParam}-virtual-machine'
   scope: resourceGroup(resourceGroupUKSParam.name)
   params: {
-    keyVault: keyVaultParam
-    tags: tagsParam
-    location: resourceGroupUKSParam.location
-  }
-  dependsOn: [
-    resourceGroupUKS
-  ]
-}
-
-module virtualMachine 'Modules/virtual-machine.bicep' = {
-  name: '${serviceName}-virtualMachine'
-  scope: resourceGroup(resourceGroupUKSParam.name)
-  params: {
-    tags: tagsParam
-    location: resourceGroupUKSParam.location
     vm: vmParam
+    location: resourceGroupUKSParam.location
+    tags: tagsParam
     subnetId: virtualNetwork.outputs.subnetId
+    networkSecurityGroupId: virtualNetwork.outputs.networkSecurityGroupId
   }
   dependsOn: [
     virtualNetwork
   ]
 }
 
-output keyVaultId string = keyVault.outputs.keyVaultId
-output vnetdefaultsubnetId string = virtualNetwork.outputs.subnetId
+output subnetId string = virtualNetwork.outputs.subnetId
+output networkSecurityGroupId string = virtualNetwork.outputs.networkSecurityGroupId
