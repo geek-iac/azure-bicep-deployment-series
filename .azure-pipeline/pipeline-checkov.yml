@@ -5,8 +5,8 @@ variables:
 
 name: '$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)'
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: 'linux-agent-pool'
+  # vmImage: 'ubuntu-latest'
 
 stages:
 - stage: checkov_scan
