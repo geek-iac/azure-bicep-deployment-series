@@ -30,15 +30,14 @@ stages:
       
     # Install Checkov
     - task: Bash@3
-      name: Install_Checkov
+      name: Install_Latest_Checkov
       inputs:
         targetType: 'inline'
         script: |
-          echo "[INFO], Installing Checkov ..."
-          pip install checkov
-          echo "[INFO], Checking Checkov version..."
+          echo "[INFO], Installing latest Checkov, boto3, and botocore..."
+          pip3 install --upgrade checkov boto3 botocore
           checkov --version
-      displayName: "Installing Checkov"
+      displayName: "Install Latest Checkov"
 
     # Checkov Ignore Checks
     - task: Bash@3
