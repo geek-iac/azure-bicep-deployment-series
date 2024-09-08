@@ -1,0 +1,57 @@
+variables: 
+  templateFile: '$(Build.Repository.LocalPath)/Bicep/main.bicep'
+  parametersFile: '$(Build.Repository.LocalPath)/Bicep/env/dev.bicepparam'
+  DeploymentName: 'agentpool'
+
+name: '$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: checkov_scan
+  displayName: checkov scan
+  jobs:
+  - job: checkov_scan
+    displayName: checkov scan
+    steps:
+    # Install Checkov
+    - task: Bash@3
+      name: Install_Checkov
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "[INFO], Installing Checkov ..."
+          pip install checkov
+          echo "[INFO], Checking Checkov version..."
+          checkov --version
+      displayName: "Installing Checkov"
+
+    # Checkov Ignore Checks
+    - task: Bash@3
+      name: Checkov_Ignore_Checks
+      inputs:
+        targetType: 'inline'
+        script: |
+          python CHECKOV_IGNORE.py
+        workingDirectory: '$(iacReportScriptFolder)'
+      displayName: "Checkov Ignore Checks"
+
+    # Run Checkov Scan
+    - task: Bash@3
+      name: Run_Checkov_Scan
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "[INFO], Running Checkov scan..."
+          mkdir -p $(System.DefaultWorkingDirectory)/results/         
+          checkov --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output sarif --output-file-path $(System.DefaultWorkingDirectory)/results/ --skip-check $(SKIP_CHECKS)
+      displayName: "Run Checkov for Compliance check"
+
+    # Publish SARIF Logs
+    - task: PublishBuildArtifacts@1
+      name: Publish_Test_SARIF_logs
+      displayName: "Publish Test SARIF logs"
+      inputs:
+        pathToPublish: $(System.DefaultWorkingDirectory)/results/
+        artifactName: CodeAnalysisLogs
