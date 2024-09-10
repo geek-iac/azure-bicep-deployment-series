@@ -34,8 +34,8 @@ stages:
         targetType: 'inline'
         script: |
           echo "[INFO], Running Checkov scan..."
-          checkov --directory $(templateFileDir) --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output junitxml \ -
-          --skip-check $(SKIP_CHECKS) > $(System.DefaultWorkingDirectory)/bicep-checkov-report.xml 
+          checkov --directory $(templateFileDir) --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output junitxml \
+          --output-file-path $(System.DefaultWorkingDirectory)/checkov.xml --skip-check $(SKIP_CHECKS)
       displayName: "Run Checkov for Compliance check"
 
     - task: PublishTestResults@2
@@ -43,6 +43,6 @@ stages:
         testRunTitle: "Checkov Results"
         failTaskOnFailedTests: true
         testResultsFormat: "JUnit"
-        testResultsFiles: "bicep-checkov-report.xml"
+        testResultsFiles: "checkov.xml"
         searchFolder: "$(System.DefaultWorkingDirectory)"
       displayName: "Publish Test results"
