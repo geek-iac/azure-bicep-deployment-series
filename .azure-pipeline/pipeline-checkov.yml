@@ -22,7 +22,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          python checkov_ignore.py
+          python3 checkov_ignore.py
         workingDirectory: '$(iacReportScriptFolder)'
       displayName: "Checkov Ignore Checks"
 
