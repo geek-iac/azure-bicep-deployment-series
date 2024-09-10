@@ -35,7 +35,7 @@ stages:
         script: |
           echo "[INFO], Running Checkov scan..."
           checkov --directory $(templateFileDir) --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output junitxml \
-          --output-file-path $(System.DefaultWorkingDirectory)/bicep-checkov-report.xml --skip-check $(SKIP_CHECKS)
+          --skip-check $(SKIP_CHECKS) > $(System.DefaultWorkingDirectory)/bicep-checkov-report.xml 
       displayName: "Run Checkov for Compliance check"
 
     - task: PublishTestResults@2
