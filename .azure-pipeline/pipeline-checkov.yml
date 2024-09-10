@@ -1,5 +1,6 @@
 variables: 
   templateFile: '$(Build.Repository.LocalPath)/Bicep/main.bicep'
+  templateFileDir: '$(Build.Repository.LocalPath)/Bicep'
   parametersFile: '$(Build.Repository.LocalPath)/Bicep/env/dev.bicepparam'
   DeploymentName: 'agentpool'
   iacReportScriptFolder: '$(Build.Repository.LocalPath)/Scripts'
@@ -33,14 +34,15 @@ stages:
         targetType: 'inline'
         script: |
           echo "[INFO], Running Checkov scan..."
-          mkdir -p $(System.DefaultWorkingDirectory)/results/         
-          checkov --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output sarif --output-file-path $(System.DefaultWorkingDirectory)/results/ --skip-check $(SKIP_CHECKS)
+          checkov --directory $(templateFileDir) --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output junitxml \
+          --output-file-path $(System.DefaultWorkingDirectory)/bicep.xml --skip-check $(SKIP_CHECKS)
       displayName: "Run Checkov for Compliance check"
 
-    # Publish SARIF Logs
-    - task: PublishBuildArtifacts@1
-      name: Publish_Test_SARIF_logs
-      displayName: "Publish Test SARIF logs"
+    - task: PublishTestResults@2
       inputs:
-        pathToPublish: $(System.DefaultWorkingDirectory)/results/
-        artifactName: CodeAnalysisLogs
+        testRunTitle: "Checkov Results"
+        failTaskOnFailedTests: true
+        testResultsFormat: "JUnit"
+        testResultsFiles: "CheckovReport.xml"
+        searchFolder: "$(System.DefaultWorkingDirectory)"
+      displayName: "Publish Test results"
