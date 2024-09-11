@@ -35,7 +35,7 @@ stages:
         script: |
           echo "[INFO], Running Checkov scan..."
           checkov --directory $(templateFileDir) --file ${{ variables.templateFile }} --framework bicep --soft-fail --quiet --compact --output junitxml \
-          --output-file-path $(System.DefaultWorkingDirectory)/checkov.xml --skip-check $(SKIP_CHECKS)
+          --output-file-path $(System.DefaultWorkingDirectory)/ --skip-check $(SKIP_CHECKS) > results_checkov.xml
       displayName: "Run Checkov for Compliance check"
 
     - task: PublishTestResults@2
@@ -43,6 +43,6 @@ stages:
         testRunTitle: "Checkov Results"
         failTaskOnFailedTests: true
         testResultsFormat: "JUnit"
-        testResultsFiles: "checkov.xml"
+        testResultsFiles: "results_checkov.xml"
         searchFolder: "$(System.DefaultWorkingDirectory)"
       displayName: "Publish Test results"
