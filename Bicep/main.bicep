@@ -45,5 +45,14 @@ module virtualMachine 'modules/virtual-machine.bicep' = {
   ]
 }
 
+module roleAssignment 'modules/role-assignment.bicep' = {
+  name: '${deploymentNameParam}-role-assignment'
+  scope: resourceGroup(resourceGroupUKSParam.name)
+  params: {
+    vmManagedIdentityPrincipalId: virtualMachine.outputs.vmManagedIdentityPrincipalId
+  }
+} 
+
 output subnetId string = virtualNetwork.outputs.subnetId
 output networkSecurityGroupId string = virtualNetwork.outputs.networkSecurityGroupId
+output vmManagedIdentityPrincipalId string = virtualMachine.outputs.vmManagedIdentityPrincipalId
