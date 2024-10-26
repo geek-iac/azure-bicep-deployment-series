@@ -45,6 +45,9 @@ resource networkInterfaceResource 'Microsoft.Network/networkInterfaces@2023-09-0
 resource virtualMachineResource 'Microsoft.Compute/virtualMachines@2023-09-01' = {
   name: vm.name
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     hardwareProfile: {
       vmSize: vm.size
