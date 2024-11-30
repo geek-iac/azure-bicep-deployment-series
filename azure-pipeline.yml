@@ -1,0 +1,29 @@
+variables: 
+  templateFile: '$(Build.Repository.LocalPath)/Bicep/main.bicep'
+  templateFileDir: '$(Build.Repository.LocalPath)/Bicep'
+  parametersFile: '$(Build.Repository.LocalPath)/Bicep/env/dev.bicepparam'
+  DeploymentName: 'agentpool'
+  iacReportScriptFolder: '$(Build.Repository.LocalPath)/Scripts'
+
+name: '$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)'
+
+pool: 'linux-agent-pool'
+  # vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Azure Bicep Compliance
+  jobs:
+  # Lint Bicep Template
+  - task: Bash@3
+    name: Lint_Bicep_Template
+    displayName: Lint Bicep Template
+    inputs:
+      targetType: 'inline'
+      script: |
+        bicep lint $(templateFile) --diagnostics-format sarif > $(System.DefaultWorkingDirectory)/bicep.sarif
+
+  - task: PublishBuildArtifacts@1
+    condition: always()
+    inputs:
+      pathToPublish: $(System.DefaultWorkingDirectory)/bicep.sarif
+      artifactName: CodeAnalysisLogs # required to show up in the scans tab
