@@ -1,21 +1,3 @@
-# Ignore private RSA keys
-*.pem
-*.key
-
-# Ignore SSH key files
-id_rsa
-id_rsa.pub
-id_dsa
-id_dsa.pub
-id_ecdsa
-id_ecdsa.pub
-id_ed25519
-id_ed25519.pub
-
-# Ignore specific files
-private_key.pem
-private_key.key
-
 # Ignore system files
 .DS_Store
 Thumbs.db
