@@ -6,6 +6,11 @@ The bicep template provisions an Azure Linux Virtual machine.
 
 This README provides guidance on how to locally test and deploy Azure resources using Bicep templates.
 
+# Initial setup of git locally
+```bash
+  git config --global user.email "chukujos@gmail.com"
+  git config --global user.name "Josiah Chuku"
+```
 ## Prerequisites
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)

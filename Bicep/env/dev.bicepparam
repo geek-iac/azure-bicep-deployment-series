@@ -2,13 +2,13 @@ using '../main.bicep'
 
 param deploySSHParam = true
 
-param resourceGroupUKSParam = {
+param resourceGroupEUSParam = {
   name: 'demo'
-  location: 'uksouth'
+  location: 'eastus'
 }
 
 param tagsParam = {
-  owner: 'nacho'
+  owner: 'Josiah'
   workload: 'agentpool'
   application: 'azureDevOps'
   env: 'lab'
@@ -23,7 +23,7 @@ param vnetParam = {
 
 param vmParam = {
   name: 'agentpool-vm'
-  size: 'Standard_D2s_v3'
+  size: 'Standard_DC1s_v2'
   imageReference: {
     publisher: 'Canonical'
     offer: '0001-com-ubuntu-server-focal'
